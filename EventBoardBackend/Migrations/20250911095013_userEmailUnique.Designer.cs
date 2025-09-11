@@ -3,6 +3,7 @@ using System;
 using EventBoardBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventBoardBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250911095013_userEmailUnique")]
+    partial class userEmailUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +75,7 @@ namespace EventBoardBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CompanyId")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
@@ -88,9 +91,11 @@ namespace EventBoardBackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Patronymic")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RejectionReason")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Role")
@@ -100,6 +105,7 @@ namespace EventBoardBackend.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Surname")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -119,6 +125,7 @@ namespace EventBoardBackend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("ManagerId")
@@ -221,9 +228,11 @@ namespace EventBoardBackend.Migrations
 
             modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.UserModel", b =>
                 {
-                    b.Navigation("Manager");
+                    b.Navigation("Manager")
+                        .IsRequired();
 
-                    b.Navigation("Student");
+                    b.Navigation("Student")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

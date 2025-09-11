@@ -6,8 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBoardBackend.Data.Models.Entities
 {
-
-    [Index(nameof(Email), IsUnique = true)]
     public class UserModel
     {
         public int Id { get; set; }
@@ -18,7 +16,8 @@ namespace EventBoardBackend.Data.Models.Entities
         public string Patronymic { get; set; } //отчество - если есть
         
 
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
+        public string RejectionReason { get; set; } //NULL до обработки заявки и после одобрения, имеет значение если заявка отклонена
 
         [Required]
         public string Email { get; set; }
@@ -33,6 +32,5 @@ namespace EventBoardBackend.Data.Models.Entities
         [Required]
         public UserStatus Status { get; set; } //пользователь может быть PENDING, ACCEPTED, REJECTED
         
-        public string RejectionReason; //NULL до обработки заявки и после одобрения, имеет значение если заявка отклонена
     }
 }

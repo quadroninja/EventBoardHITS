@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventBoardBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class modelFix : Migration
+    public partial class userEmailUnique : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,6 +35,7 @@ namespace EventBoardBackend.Migrations
                     Surname = table.Column<string>(type: "text", nullable: false),
                     Patronymic = table.Column<string>(type: "text", nullable: false),
                     CompanyId = table.Column<int>(type: "integer", nullable: false),
+                    RejectionReason = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     HashedPassword = table.Column<string>(type: "text", nullable: false),
                     Role = table.Column<int>(type: "integer", nullable: false),

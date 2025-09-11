@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventBoardBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250911093213_modelFix")]
-    partial class modelFix
+    [Migration("20250911124848_nullableOff")]
+    partial class nullableOff
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,7 +75,7 @@ namespace EventBoardBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
@@ -91,7 +91,9 @@ namespace EventBoardBackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Patronymic")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RejectionReason")
                         .HasColumnType("text");
 
                     b.Property<int>("Role")
@@ -101,7 +103,6 @@ namespace EventBoardBackend.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -121,7 +122,6 @@ namespace EventBoardBackend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("ManagerId")
@@ -224,11 +224,9 @@ namespace EventBoardBackend.Migrations
 
             modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.UserModel", b =>
                 {
-                    b.Navigation("Manager")
-                        .IsRequired();
+                    b.Navigation("Manager");
 
-                    b.Navigation("Student")
-                        .IsRequired();
+                    b.Navigation("Student");
                 });
 #pragma warning restore 612, 618
         }

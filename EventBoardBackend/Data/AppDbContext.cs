@@ -1,7 +1,9 @@
-﻿using EventBoardBackend.Data.Models.Entities;
+﻿using EventBoardBackend.CustomExceptions;
+using EventBoardBackend.Data.Models.Entities;
 using EventBoardBackend.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace EventBoardBackend.Data
 {
@@ -10,24 +12,27 @@ namespace EventBoardBackend.Data
         public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
         {
-            Database.EnsureDeleted();
-            Console.WriteLine("Database deleted");
-            Database.EnsureCreated();
-            Console.WriteLine("Database created");
-
+            //Database.EnsureDeleted();
+            //Console.WriteLine("Database deleted");
+            
         }
 
-        public DbSet<MeetingModel> Meetings { get; set; }
-        public DbSet<CompanyModel> Companies { get; set; }
-        public DbSet<UserModel> Users { get; set; }
-        public DbSet<ManagerModel> Managers { get; set; }
-        public DbSet<StudentModel> Students { get; set; }
+        public DbSet<MeetingModel> Meetings => Set<MeetingModel>();
+        public DbSet<CompanyModel> Companies => Set<CompanyModel>();
+        public DbSet<UserModel> Users => Set<UserModel>();
+        public DbSet<ManagerModel> Managers => Set<ManagerModel>();
+        public DbSet<StudentModel> Students => Set<StudentModel>();
         
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // между User (пользователи) и Meeting (мероприятие) две связи,
             // "менеджер курирует мероприятие" и "студент посещает мероприятие"
+
+            modelBuilder.Entity<UserModel>()
+                .HasIndex(e => e.Email)
+                .IsUnique();
+
 
             modelBuilder.Entity<MeetingModel>()
                 .HasOne(m => m.Manager)
@@ -42,11 +47,19 @@ namespace EventBoardBackend.Data
                 .HasOne(p => p.Student)
                 .WithOne(d => d.User)
                 .HasForeignKey<StudentModel>(d => d.Id);
-
-            //modelBuilder.Entity<StudentModel>()
-            //    .HasMany(p => p.AttendedMeetings)
-            //    .WithMany(u => u.Students);
         }
 
+        public async Task<UserModel> GetUserByEmail(string email)
+        {
+            try
+            {
+                return await Users
+                    .SingleOrDefaultAsync(u => u.Email == email);
+            }
+            catch (InvalidOperationException ex) //если пользователей больше 2 и более на Email (противоречит ОЦ)
+            {
+                throw new DuplicateException("Two users with same email", ex);
+            }
+        }
     }
 }
