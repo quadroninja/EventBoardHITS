@@ -19,7 +19,8 @@ namespace EventBoardBackend.Services.Auth
         public string GenerateToken(UserModel user)
         {
             Claim[] claims = [new("userId", user.Id.ToString()),
-                              new("userRole", user.Role.ToString())];
+                              new("userRole", user.Role.ToString()),
+                              new("userStatus", user.Status.ToString())];
 
             var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),

@@ -63,19 +63,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization(opt =>
 {
     {
-        opt.AddPolicy("AdminPolicy", policy =>
+        opt.AddPolicy("AcceptedAccountPolicy", policy =>
         {
-            policy.RequireRole("ADMIN");
+            policy.RequireClaim("userStatus", "ACCEPTED");
         });
-        opt.AddPolicy("ManagerPolicy", policy =>
-        {
-            policy.RequireRole("MANAGER");
-        });
-        opt.AddPolicy("StudentPolicy", policy =>
-        {
-            policy.RequireRole("STUDENT");
-        });
-
     }
 });
 builder.Services.AddControllers()
@@ -87,6 +78,7 @@ builder.Services.AddScoped<JwtProvider>();
 
 
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<MeetingService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
