@@ -1,4 +1,4 @@
-@EventBoardBackend_HostAddress = http://localhost:5062
+@EventBoardBackend_HostAddress = http://localhost:5029
 
 GET {{EventBoardBackend_HostAddress}}/weatherforecast/
 Accept: application/json

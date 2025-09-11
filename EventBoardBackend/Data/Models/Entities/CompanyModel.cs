@@ -8,7 +8,7 @@ namespace EventBoardBackend.Data.Models.Entities
     {
         public int Id { get; set; }
         [Required]
-        public required string Name { get; set; }
+        public string Name { get; set; }
         public List<ManagerModel> Managers { get; set; } 
     }
 }

@@ -1,17 +1,19 @@
 ﻿using EventBoardBackend.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBoardBackend.Data.Models.Entities
 {
-    [Keyless]
     public class ManagerModel
     {
-        [Required]
-        public required UserModel User { get; set; }
+        public int Id { get; set; } 
 
-        [Required] 
-        public required CompanyModel Company { get; set; }
+        [Required]
+        public UserModel User { get; set; }
+
+        [Required]
+        public CompanyModel Company { get; set; }
         public List<MeetingModel> ManagedMeetings { get; set; }
     }
 }

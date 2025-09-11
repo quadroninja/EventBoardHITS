@@ -10,14 +10,15 @@ namespace EventBoardBackend.Models.Entities
         public int Id { get; set; }
 
         [Required]
-        public required string Title { get; set; }
-        public string? Description { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
 
         [Required]
-        public required DateTimeOffset MeetingDateTime { get; set; }
+        public DateTimeOffset MeetingDateTime { get; set; }
 
         public List<StudentModel> Students { get; set; } //посещающие студенты
-        
-        public required ManagerModel Manager { get; set; } //руководящий менеджер
+
+        [Required]
+        public ManagerModel Manager { get; set; } //руководящий менеджер
     }
 }
