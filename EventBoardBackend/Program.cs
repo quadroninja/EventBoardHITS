@@ -47,7 +47,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtOptions")["SecretKey"]))
+                Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtOptions")["SecretKey"])),
+            RoleClaimType = "userRole"
         };
 
         opt.Events = new JwtBearerEvents
@@ -59,7 +60,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             }
         };
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(opt =>
+{
+    {
+        opt.AddPolicy("AdminPolicy", policy =>
+        {
+            policy.RequireRole("ADMIN");
+        });
+        opt.AddPolicy("ManagerPolicy", policy =>
+        {
+            policy.RequireRole("MANAGER");
+        });
+        opt.AddPolicy("StudentPolicy", policy =>
+        {
+            policy.RequireRole("STUDENT");
+        });
+
+    }
+});
 builder.Services.AddControllers()
     .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 

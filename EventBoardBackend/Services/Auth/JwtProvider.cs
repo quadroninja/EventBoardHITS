@@ -19,7 +19,7 @@ namespace EventBoardBackend.Services.Auth
         public string GenerateToken(UserModel user)
         {
             Claim[] claims = [new("userId", user.Id.ToString()),
-                              new("role", user.Role.ToString())];
+                              new("userRole", user.Role.ToString())];
 
             var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
@@ -27,7 +27,8 @@ namespace EventBoardBackend.Services.Auth
 
             var token = new JwtSecurityToken(
                 signingCredentials: credentials,
-                expires: DateTime.UtcNow.AddHours(_options.ExpiresHours));
+                expires: DateTime.UtcNow.AddHours(_options.ExpiresHours),
+                claims: claims);
 
             var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
             return tokenValue;
