@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBoardBackend.Data.Models.Entities
 {
-    [Table("companies")]
     public class CompanyModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public List<UserModel> Managers { get; set; } 
-        public List<RequestModel> Requests { get; set; } // заявки на вступление в компанию
+        [Required]
+        public required string Name { get; set; }
+        public List<ManagerModel> Managers { get; set; } 
     }
 }

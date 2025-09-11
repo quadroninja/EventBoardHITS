@@ -22,97 +22,7 @@ namespace EventBoardBackend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.CompanyModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("companies");
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.RequestModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("requests");
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.RoleModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("roles");
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.UserModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Patronymic")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Surname")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("users");
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Models.Entities.MeetingModel", b =>
+            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.MeetingModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,112 +31,19 @@ namespace EventBoardBackend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("ManagerId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("MeetingDateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ManagerId");
-
-                    b.ToTable("meetings");
-                });
-
-            modelBuilder.Entity("MeetingModelUserModel", b =>
-                {
-                    b.Property<int>("AttendedMeetingsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("AttendedMeetingsId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("MeetingModelUserModel");
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.RequestModel", b =>
-                {
-                    b.HasOne("EventBoardBackend.Data.Models.Entities.CompanyModel", "Company")
-                        .WithMany("Requests")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("EventBoardBackend.Data.Models.Entities.UserModel", "User")
-                        .WithMany("Requests")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.UserModel", b =>
-                {
-                    b.HasOne("EventBoardBackend.Data.Models.Entities.CompanyModel", "Company")
-                        .WithMany("Managers")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("EventBoardBackend.Data.Models.Entities.RoleModel", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Models.Entities.MeetingModel", b =>
-                {
-                    b.HasOne("EventBoardBackend.Data.Models.Entities.UserModel", "Manager")
-                        .WithMany("ManagedMeetings")
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Manager");
-                });
-
-            modelBuilder.Entity("MeetingModelUserModel", b =>
-                {
-                    b.HasOne("EventBoardBackend.Models.Entities.MeetingModel", null)
-                        .WithMany()
-                        .HasForeignKey("AttendedMeetingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EventBoardBackend.Data.Models.Entities.UserModel", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.CompanyModel", b =>
-                {
-                    b.Navigation("Managers");
-
-                    b.Navigation("Requests");
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.RoleModel", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("EventBoardBackend.Data.Models.Entities.UserModel", b =>
-                {
-                    b.Navigation("ManagedMeetings");
-
-                    b.Navigation("Requests");
+                    b.ToTable("Meeting", (string)null);
                 });
 #pragma warning restore 612, 618
         }

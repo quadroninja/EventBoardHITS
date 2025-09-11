@@ -9,18 +9,18 @@ namespace EventBoardBackend.Controllers
     [Route("debug")]
     public class DebugController
     {
-        private readonly AppDbContext _context;
+        //private readonly AppDbContext _context;
 
-        public DebugController(AppDbContext context)
-        {
-            _context = context;
-        }
+        //public DebugController(AppDbContext context)
+        //{
+        //    //_context = context;
+        //}
 
         [HttpGet]
         public IActionResult CreateMeeting()
         {
-            _context.Role.Add(new RoleModel { Name="someRole", Users=new List<UserModel>()});
-            _context.SaveChanges();
+            //_context.Roles.Add(new RoleModel { Name="someRole", Users=new List<UserModel>()});
+            //_context.SaveChanges();
             return new NoContentResult();
         }
     }

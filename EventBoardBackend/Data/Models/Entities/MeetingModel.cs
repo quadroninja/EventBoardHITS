@@ -1,20 +1,23 @@
 ﻿using EventBoardBackend.Data.Models.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBoardBackend.Models.Entities
 {
-    [Table("meetings")]
     public class MeetingModel
     {
+
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
 
-        public DateTimeOffset MeetingDateTime { get; set; }
+        [Required]
+        public required string Title { get; set; }
+        public string? Description { get; set; }
 
-        public List<UserModel> Students { get; set; } //посещающие студенты
+        [Required]
+        public required DateTimeOffset MeetingDateTime { get; set; }
+
+        public List<StudentModel> Students { get; set; } //посещающие студенты
         
-        public UserModel Manager { get; set; } //руководящий менеджер
-        public int ManagerId { get; set; } // внешний ключ от многих событий к одному менеджеру
+        public required ManagerModel Manager { get; set; } //руководящий менеджер
     }
 }
