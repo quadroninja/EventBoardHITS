@@ -19,6 +19,8 @@ namespace EventBoardBackend.Models.Entities
         public List<StudentModel> Students { get; set; } //посещающие студенты
 
         [Required]
+        public int ManagerId; 
+        [Required]
         public ManagerModel Manager { get; set; } //руководящий менеджер
     }
 }

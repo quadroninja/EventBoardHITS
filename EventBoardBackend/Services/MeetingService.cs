@@ -50,7 +50,30 @@ namespace EventBoardBackend.Services
                 Manager = await _dbContext.Managers.FindAsync(managerId),
             });
 
+            await _dbContext.SaveChangesAsync();
+
             return newMeeting;
+        }
+
+
+        public async Task<MeetingDto> Signup(int userId, int meetingId)
+        {
+            var student = await _dbContext.Students.FindAsync(userId);
+            var meeting = await _dbContext.Meetings.FindAsync(meetingId);
+            if (student != null && meeting != null)
+            {
+                student.AttendedMeetings.Add(meeting);
+                await _dbContext.SaveChangesAsync();
+            }
+            else
+                throw new Exception("Error during signup: Student or meeting are not found");
+
+            return new MeetingDto
+            {
+                Title = meeting.Title,
+                Description = meeting.Description,
+                MeetingDateTime = meeting.MeetingDateTime
+            };
         }
 
     }

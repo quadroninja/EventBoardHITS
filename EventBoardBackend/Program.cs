@@ -79,6 +79,7 @@ builder.Services.AddScoped<JwtProvider>();
 
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<MeetingService>();
+builder.Services.AddScoped<AdminService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>

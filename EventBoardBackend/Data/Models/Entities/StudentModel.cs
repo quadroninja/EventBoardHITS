@@ -9,6 +9,6 @@ namespace EventBoardBackend.Data.Models.Entities
     {
         public int Id { get; set; }
         public UserModel User { get; set; }
-        public List<MeetingModel> AttendedMeetings { get; set; }
+        public List<MeetingModel> AttendedMeetings { get; set; } = new List<MeetingModel>();
     }
 }

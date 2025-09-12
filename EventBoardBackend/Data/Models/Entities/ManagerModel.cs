@@ -12,6 +12,9 @@ namespace EventBoardBackend.Data.Models.Entities
         [Required]
         public UserModel User { get; set; }
 
+
+        [Required]
+        public int CompanyId;
         [Required]
         public CompanyModel Company { get; set; }
         public List<MeetingModel> ManagedMeetings { get; set; }

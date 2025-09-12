@@ -37,7 +37,7 @@ namespace EventBoardBackend.Controllers
 
             HttpContext.Response.Cookies.Append("token-cookie", token);
 
-            return token;
+            return Ok(token);
         }
 
     }

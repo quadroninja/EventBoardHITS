@@ -34,9 +34,15 @@ namespace EventBoardBackend.Data
                 .IsUnique();
 
 
+            modelBuilder.Entity<ManagerModel>()
+                .HasOne(m => m.Company)
+                .WithMany(c => c.Managers)
+                .HasForeignKey(m => m.CompanyId);
+
             modelBuilder.Entity<MeetingModel>()
                 .HasOne(m => m.Manager)
-                .WithMany(m => m.ManagedMeetings);
+                .WithMany(m => m.ManagedMeetings)
+                .HasForeignKey(m => m.ManagerId);
 
             modelBuilder.Entity<UserModel>()
                 .HasOne(p => p.Manager)

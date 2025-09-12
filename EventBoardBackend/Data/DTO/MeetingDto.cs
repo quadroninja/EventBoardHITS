@@ -4,6 +4,6 @@
     {
         public string Title {  get; set; }
         public string Description { get; set; }
-        public DateTimeOffset MeetingDateTime;
+        public DateTimeOffset MeetingDateTime { get; set; }
     }
 }

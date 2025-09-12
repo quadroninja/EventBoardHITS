@@ -20,10 +20,17 @@ namespace EventBoardBackend.Controllers
         }
 
         [HttpGet("all")]
-        [Authorize(Policy = "AcceptedAccountPolicy")]
+        [Authorize(Roles = "STUDENT,ADMIN", Policy = "AcceptedAccountPolicy")]
         public async Task<ActionResult<List<MeetingDto>>> GetAllMeetings()
         {
             return Ok(await _service.GetAllMeetings());
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "STUDENT,ADMIN", Policy = "AcceptedAccountPolicy")]
+        public async Task<ActionResult<MeetingDto>> GetMeetingById(int id)
+        {
+            return await _service.GetMeetingById(id);
         }
 
         
@@ -44,6 +51,16 @@ namespace EventBoardBackend.Controllers
             }
             
             return Ok(await _service.CreateMeeting(meetingData, managerId.Value));
+        }
+
+        [HttpPost("signup/{id}")]
+        [Authorize(Roles  = "STUDENT", Policy = "AcceptedAccountPolicy")]
+        public async Task<ActionResult<MeetingDto>> Signup(int id)
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            int studentId = int.Parse(identity.FindFirst("userId").Value);
+
+            return await _service.Signup(studentId, id);
         }
     }
 }
